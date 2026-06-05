@@ -23,117 +23,135 @@
                 </div>
             </div>
             <div id="logoutSection" class="hidden">
-                <button onclick="logout()" class="text-xs bg-rose-950/60 text-rose-400 px-3 py-1.5 rounded-lg border border-rose-500/20 hover:bg-rose-900/50 transition-all">خروج از حساب</button>
+                <button onclick="logout()" class="text-xs bg-rose-950/60 text-rose-400 px-3 py-1.5 rounded-lg border border-rose-500/20 hover:bg-rose-900/50 transition-all">خروج</button>
             </div>
         </div>
     </header>
 
-    <main class="flex-1 w-full max-w-lg mx-auto px-4 py-8">
+    <main class="flex-1 w-full max-w-md mx-auto px-4 py-8">
         
         <div id="navigationTabs" class="flex border-b border-slate-800 mb-6 text-xs font-bold text-slate-400 text-center">
             <button onclick="switchTab('activate')" id="tab-activate" class="flex-1 pb-3 border-b-2 tab-active">فعال‌سازی توکن</button>
-            <button onclick="switchTab('login')" id="tab-login" class="flex-1 pb-3 border-b-2 border-transparent">ورود کاربری / ادمین</button>
-            <button onclick="switchTab('request')" id="tab-request" class="flex-1 pb-3 border-b-2 border-transparent">درخواست توکن</button>
+            <button onclick="switchTab('login')" id="tab-login" class="flex-1 pb-3 border-b-2 border-transparent">ورود کاربری</button>
         </div>
 
+        <!-- تب فعال‌سازی توکن -->
         <div id="panel-activate" class="block space-y-4">
             <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl">
-                <h2 class="text-base font-black text-amber-400 mb-2">فعال‌سازی اشتراک با کد توکن</h2>
-                <p class="text-xs text-slate-400 mb-6">کد توکن اختصاصی خود را وارد کنید تا کانفیگ Reality واقعی مستقیماً روی سرور ساخته شود.</p>
+                <h2 class="text-base font-black text-amber-400 mb-2">فعال‌سازی اشتراک با توکن</h2>
+                <p class="text-xs text-slate-400 mb-6">کد توکن دریافتی خود را وارد کنید تا اکانت به صورت خودکار روی سرور ساخته شود.</p>
                 
                 <form onsubmit="activateToken(event)" class="space-y-4">
                     <input type="text" id="tokenInput" required class="w-full bg-slate-950 border border-slate-800 focus:border-amber-500 rounded-xl px-4 py-3 text-center font-mono text-amber-400 tracking-wider" placeholder="TOK-V3-XXXX">
-                    <button type="submit" id="btnActivateText" class="w-full py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black rounded-xl text-sm transition-all shadow-lg shadow-amber-500/10">اتصال و ساخت اکانت روی سرور</button>
+                    <button type="submit" id="btnActivateText" class="w-full py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black rounded-xl text-sm transition-all shadow-lg">اتصال و ساخت اکانت</button>
                 </form>
             </div>
         </div>
 
+        <!-- تب ورود برای ریزمصرف -->
         <div id="panel-login" class="hidden space-y-4">
             <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl">
-                <h2 class="text-base font-black text-amber-400 mb-2">ورود به پنل کاربری / مدیریت</h2>
-                <p class="text-xs text-slate-400 mb-6">جهت بررسی حجم باقیمانده، ریزمصرف یا دسترسی ادمین وارد شوید.</p>
-                
+                <h2 class="text-base font-black text-amber-400 mb-2">ورود به پنل ریزمصرف</h2>
                 <form onsubmit="handleLogin(event)" class="space-y-4">
                     <div>
-                        <label class="block text-[11px] text-slate-400 mb-1">نام کاربری</label>
+                        <label class="block text-[11px] text-slate-400 mb-1">نام کاربری (v3eeed_xxx)</label>
                         <input type="text" id="loginUsername" required class="w-full bg-slate-950 border border-slate-800 focus:border-amber-500 rounded-xl px-4 py-2.5 text-xs focus:outline-none">
                     </div>
                     <div>
                         <label class="block text-[11px] text-slate-400 mb-1">کلمه عبور</label>
                         <input type="password" id="loginPassword" required class="w-full bg-slate-950 border border-slate-800 focus:border-amber-500 rounded-xl px-4 py-2.5 text-xs focus:outline-none">
                     </div>
-                    <button type="submit" id="btnLoginText" class="w-full py-3 bg-slate-800 hover:bg-slate-700 text-amber-400 font-bold rounded-xl text-sm transition-all">ورود ایمن به سیستم</button>
+                    <button type="submit" id="btnLoginText" class="w-full py-3 bg-slate-800 hover:bg-slate-700 text-amber-400 font-bold rounded-xl text-sm transition-all">ورود به حساب</button>
                 </form>
             </div>
         </div>
 
-        <div id="panel-request" class="hidden space-y-6">
-            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl">
-                <h2 class="text-base font-black text-amber-400 mb-1">تهیه توکن پرمیوم (Crypto)</h2>
-                <p class="text-[11px] text-slate-400 mb-4">مبلغ ۵ تتر را به ولت زیر واریز کرده و هش تراکنش (TxHash) را ثبت کنید.</p>
+        <!-- داشبورد نمایش کانفیگ + تشخیص سیستم عامل و لینک دانلود نرم افزارها -->
+        <div id="userDashboard" class="hidden space-y-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl space-y-4">
+                <h2 class="text-base font-black text-emerald-400">اتصال با موفقیت برقرار شد! 🎉</h2>
                 
-                <div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800 mb-4 text-center font-mono text-xs select-all text-emerald-400">
-                    TY9bK8SdnXbY9mQ7zXWkR8fT9jLp2oKm7v
+                <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2 text-xs font-mono">
+                    <div class="flex justify-between"><span>نام کاربری ورود:</span> <span id="dashUser" class="text-indigo-400 font-bold"></span></div>
+                    <div class="flex justify-between"><span>کلمه عبور ورود:</span> <span id="dashPass" class="text-rose-400 font-bold"></span></div>
+                    <div class="flex justify-between"><span>ترافیک کل پلن:</span> <span id="dashVolume" class="text-amber-400"></span></div>
+                    <div class="flex justify-between"><span>مصرف شده واقعی:</span> <span id="dashUsed" class="text-rose-500"></span></div>
+                    <div class="flex justify-between"><span>باقیمانده هماهنگ:</span> <span id="dashRemain" class="text-emerald-400 font-bold"></span></div>
+                    <div class="flex justify-between"><span>زمان اعتبار:</span> <span><strong id="dashDays" class="text-amber-400"></strong> روز</span></div>
                 </div>
 
-                <form onsubmit="submitCrypto(event)" class="space-y-3 text-xs">
-                    <input type="text" id="cryptoTx" required placeholder="کد هش تراکنش تتر (TxID / TxHash)" class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-lg focus:outline-none text-slate-300">
-                    <input type="text" id="cryptoContact" required placeholder="آیدی تلگرام شما جهت ارسال توکن" class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-lg focus:outline-none text-slate-300">
-                    <button type="submit" class="w-full py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold rounded-xl">ثبت و ارسال تراکنش</button>
-                </form>
+                <textarea id="configArea" readonly rows="4" class="w-full bg-slate-950 p-3 rounded-xl border border-slate-800 font-mono text-[10px] text-amber-200/80 focus:outline-none break-all"></textarea>
+                <button onclick="copyLink()" class="w-full py-2.5 bg-amber-500 text-slate-950 font-black rounded-xl text-xs">کپی کانفیگ اختصاصی V3EEED</button>
             </div>
 
-            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl">
-                <h2 class="text-base font-black text-amber-400 mb-1">درخواست توکن تست رایگان</h2>
-                <p class="text-[11px] text-slate-400 mb-4">اطلاعات خود را بگذارید تا پس از تایید ادمین، توکن تست ۷ روزه برای شما پیامک/تلگرام شود.</p>
-                
-                <form onsubmit="submitFreeRequest(event)" class="space-y-3 text-xs">
-                    <input type="text" id="freeName" required placeholder="نام و نام خانوادگی" class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-lg focus:outline-none">
-                    <input type="text" id="freeContact" required placeholder="آیدی تلگرام یا شماره تماس" class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-lg focus:outline-none">
-                    <button type="submit" class="w-full py-2.5 bg-amber-500 text-slate-950 font-black rounded-xl">ارسال درخواست تست</button>
-                </form>
+            <!-- بخش دانلود هوشمند نرم افزارها بر اساس نوع دستگاه مشتری -->
+            <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl space-y-4">
+                <h3 class="text-sm font-black text-amber-400 flex items-center gap-2">
+                    📥 دانلود نرم‌افزار متناسب با دستگاه شما (<span id="detectedOS" class="text-rose-400"></span>)
+                </h3>
+                <p class="text-[11px] text-slate-400">جهت اتصال، یکی از نرم‌افزارهای زیر را دانلود کرده و کانفیگ کپی شده را داخل آن Import یا Paste کنید.</p>
+                <div id="downloadLinksContainer" class="grid grid-cols-1 gap-2.5 text-xs">
+                    <!-- لینک‌ها به صورت داینامیک اینجا رندر می‌شوند -->
+                </div>
             </div>
-        </div>
-
-        <div id="userDashboard" class="hidden bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl space-y-4">
-            <h2 class="text-base font-black text-amber-400">وضعیت مصرف اشتراک شما</h2>
-            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2.5 text-xs font-mono">
-                <div class="flex justify-between"><span>نام کاربری:</span> <span id="dashUser" class="text-indigo-400 font-bold"></span></div>
-                <div class="flex justify-between"><span>حجم کل پلن:</span> <span id="dashVolume" class="text-amber-400"></span></div>
-                <div class="flex justify-between"><span>ترافیک مصرف شده:</span> <span id="dashUsed" class="text-rose-400"></span></div>
-                <div class="flex justify-between"><span>حجم باقیمانده واقعی:</span> <span id="dashRemain" class="text-emerald-400 font-bold"></span></div>
-                <div class="flex justify-between"><span>اعتبار زمانی:</span> <span><strong id="dashDays" class="text-amber-400"></strong> روز</span></div>
-            </div>
-            <textarea id="configArea" readonly rows="4" class="w-full bg-slate-950 p-3 rounded-xl border border-slate-800 font-mono text-[10px] text-amber-200/80 focus:outline-none break-all"></textarea>
-            <button onclick="copyLink()" class="w-full py-2.5 bg-emerald-600 text-white font-bold rounded-xl text-xs">کپی کانفیگ اختصاصی V3EEED</button>
-        </div>
-
-        <div id="activationResultBox" class="hidden bg-slate-900 border border-emerald-500/30 rounded-3xl p-6 shadow-2xl space-y-4">
-            <h2 class="text-lg font-black text-emerald-400">اکانت با موفقیت روی سرور ثنایی ساخته شد! 🎉</h2>
-            <div class="p-3 bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs rounded-xl leading-relaxed">
-                <strong>توجه مهم:</strong> مشخصات زیر را یادداشت کنید. از این پس می‌توانید با این یوزرنیم و پسورد در تب "ورود کاربری" حجم مصرفی خود را چک کنید.
-            </div>
-            <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-2 text-xs font-mono">
-                <div class="flex justify-between"><span>نام کاربری ورود:</span> <span id="actUser" class="text-indigo-400 font-bold"></span></div>
-                <div class="flex justify-between"><span>کلمه عبور ورود:</span> <span id="actPass" class="text-rose-400 font-bold"></span></div>
-                <div class="flex justify-between"><span>ترافیک کل:</span> <span id="actVol" class="text-amber-400"></span></div>
-            </div>
-            <textarea id="actConfigArea" readonly rows="4" class="w-full bg-slate-950 p-3 rounded-xl border border-slate-800 font-mono text-[10px] text-amber-200/80 focus:outline-none break-all"></textarea>
-            <button onclick="copyActLink()" class="w-full py-2.5 bg-emerald-600 text-white font-bold rounded-xl text-xs">کپی کانفیگ V3EEED</button>
         </div>
 
     </main>
 
     <footer class="border-t border-slate-800 bg-slate-950 px-4 py-4 text-center text-[10px] text-slate-500">
-        V3EEED | VEEED ALL YOU NEED - سیستم مدیریت هوشمند اکانت و لایه امنیتی توزیع ترافیک شبکه کلاینت
+        V3EEED | VEEED ALL YOU NEED - توزیع اتوماتیک و مانیتورینگ هوشمند شبکه کلاینت
     </footer>
 
     <script>
         const BACKEND_URL = "https://iq.veeed.ir:8000";
 
-        // سیستم سوئیچ بین تب‌ها
+        // دیتابیس لینک‌های مستقیم گیت‌هاب بدون فیلتر جهت دانلود اپلیکیشن‌ها
+        const APP_DOWNLOADS = {
+            Android: [
+                { name: "v2rayNG (محبوب و پایدار)", url: "https://github.com/2dust/v2rayNG/releases/download/1.9.1/v2rayNG_1.9.1.apk" },
+                { name: "V2Box Android Client", url: "https://github.com/v2box/v2box-android/releases/latest" },
+                { name: "MahsaNG (مخصوص شبکه ایران)", url: "https://github.com/GFW-knocker/MahsaNG/releases/latest" }
+            ],
+            iOS: [
+                { name: "V2Box - V2ray Client (رایگان اپ استور)", url: "https://apps.apple.com/us/app/v2box-v2ray-client/id6446814690" },
+                { name: "Streisand Client", url: "https://apps.apple.com/us/app/streisand/id6450534064" }
+            ],
+            Windows: [
+                { name: "NekoRay Windows Core", url: "https://github.com/MatsuriDayo/nekoray/releases/latest" },
+                { name: "v2rayN Client", url: "https://github.com/2dust/v2rayN/releases/latest" }
+            ],
+            Mac: [
+                { name: "V2Box for macOS", url: "https://apps.apple.com/us/app/v2box-v2ray-client/id6446814690" },
+                { name: "NekoRay macOS Silicon/Intel", url: "https://github.com/MatsuriDayo/nekoray/releases/latest" }
+            ]
+        };
+
+        // تابع تشخیص هوشمند سیستم عامل کاربر
+        function detectOS() {
+            const ua = navigator.userAgent;
+            if (/android/i.test(ua)) return "Android";
+            if (/iPad|iPhone|iPod/.test(ua) && !window.MSStream) return "iOS";
+            if (/Macintosh/i.test(ua)) return "Mac";
+            if (/Windows/i.test(ua)) return "Windows";
+            return "Android"; // پیش‌فرض برای بقیه سیستم عامل‌ها
+        }
+
+        function renderDownloadLinks() {
+            const os = detectOS();
+            document.getElementById('detectedOS').innerText = os;
+            const container = document.getElementById('downloadLinksContainer');
+            const links = APP_DOWNLOADS[os] || APP_DOWNLOADS['Android'];
+            
+            container.innerHTML = links.map(app => `
+                <a href="${app.url}" target="_blank" class="w-full bg-slate-950 hover:bg-slate-800 border border-slate-800 hover:border-amber-500/40 p-3 rounded-xl flex justify-between items-center transition-all font-bold text-slate-300">
+                    <span>${app.name}</span>
+                    <span class="text-[10px] bg-amber-500/10 text-amber-400 px-2 py-1 rounded-md border border-amber-500/20">دانلود مستقیم</span>
+                </a>
+            `).join('');
+        }
+
         function switchTab(tabId) {
-            const tabs = ['activate', 'login', 'request'];
+            const tabs = ['activate', 'login'];
             tabs.forEach(t => {
                 const btn = document.getElementById(`tab-${t}`);
                 const panel = document.getElementById(`panel-${t}`);
@@ -148,15 +166,13 @@
                 }
             });
             document.getElementById('userDashboard').classList.add('hidden');
-            document.getElementById('activationResultBox').classList.add('hidden');
         }
 
-        // ۱. تابع فعال‌سازی توکن پولی یا رایگان
         async function activateToken(e) {
             e.preventDefault();
             const tok = document.getElementById('tokenInput').value.trim();
             const btn = document.getElementById('btnActivateText');
-            btn.innerText = "در حال ارتباط با API ثنایی و ساخت کلاینت...";
+            btn.innerText = "در حال ساخت کلاینت روی ثنایی...";
             btn.disabled = true;
 
             try {
@@ -169,33 +185,25 @@
                 
                 if (!response.ok) {
                     alert(data.detail || "خطایی رخ داد.");
-                    btn.innerText = "اتصال و ساخت اکانت روی سرور";
+                    btn.innerText = "اتصال و ساخت اکانت";
                     btn.disabled = false;
                     return;
                 }
 
-                document.getElementById('panel-activate').classList.add('hidden');
-                document.getElementById('navigationTabs').classList.add('hidden');
-                document.getElementById('activationResultBox').classList.remove('hidden');
-                
-                document.getElementById('actUser').innerText = data.username;
-                document.getElementById('actPass').innerText = data.password;
-                document.getElementById('actVol').innerText = data.volume + " GB";
-                document.getElementById('actConfigArea').value = data.config;
+                showDashboard(data);
             } catch (err) {
-                alert("خطا در ارتباط با سرور واسط پایتون.");
-                btn.innerText = "اتصال و ساخت اکانت روی سرور";
+                alert("خطا در ارتباط با سرور بک‌اند.");
+                btn.innerText = "اتصال و ساخت اکانت";
                 btn.disabled = false;
             }
         }
 
-        // ۲. تابع ورود کاربری (ریزمصرف واقعی از دیتابیس SQLite)
         async function handleLogin(e) {
             e.preventDefault();
             const u = document.getElementById('loginUsername').value.trim();
             const p = document.getElementById('loginPassword').value.trim();
             const btn = document.getElementById('btnLoginText');
-            btn.innerText = "در حال تایید هویت...";
+            btn.innerText = "در حال استعلام حجم زنده از سرور...";
 
             try {
                 const response = await fetch(`${BACKEND_URL}/login`, {
@@ -206,87 +214,41 @@
                 const data = await response.json();
 
                 if (!response.ok) {
-                    alert(data.detail || "مشخصات ورود اشتباه است.");
-                    btn.innerText = "ورود ایمن به سیستم";
+                    alert(data.detail || "مشخصات اشتباه است.");
+                    btn.innerText = "ورود به حساب";
                     return;
                 }
 
-                if (data.role === 'admin') {
-                    alert("شما با موفقیت به عنوان مدیر سیستم تایید شدید. اطلاعات در حال حاضر در دیتابیس ست هستند.");
-                    btn.innerText = "ورود ایمن به سیستم";
-                    return;
-                }
-
-                // ورود کلاینت عادی و نمایش ترافیک زنده از ثنایی
-                document.getElementById('panel-login').classList.add('hidden');
-                document.getElementById('navigationTabs').classList.add('hidden');
-                document.getElementById('userDashboard').classList.remove('hidden');
-                document.getElementById('logoutSection').classList.remove('hidden');
-
-                document.getElementById('dashUser').innerText = data.username;
-                document.getElementById('dashVolume').innerText = data.total_volume + " GB";
-                document.getElementById('dashUsed').innerText = data.used_volume + " GB";
-                document.getElementById('dashRemain').innerText = data.remaining_volume + " GB";
-                document.getElementById('dashDays').innerText = data.days;
-                document.getElementById('configArea').value = data.config;
+                showDashboard(data);
             } catch (err) {
-                alert("خطای ارتباطی با سرور بک‌اند.");
-                btn.innerText = "ورود ایمن به سیستم";
+                alert("خطا در ارتباط با سرور.");
+                btn.innerText = "ورود به حساب";
             }
         }
 
-        // ۳. ثبت تراکنش تتر (USDT)
-        async function submitCrypto(e) {
-            e.preventDefault();
-            const tx = document.getElementById('cryptoTx').value.trim();
-            const contact = document.getElementById('cryptoContact').value.trim();
-            
-            try {
-                const response = await fetch(`${BACKEND_URL}/submit-crypto`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ tx_hash: tx, plan_type: "Premium-50GB", contact: contact })
-                });
-                if(response.ok) {
-                    alert("تراکنش تتر شما ثبت شد. پس از تایید بلاکچین، توکن به تلگرام شما ارسال می‌شود.");
-                    document.getElementById('cryptoTx').value = '';
-                    document.getElementById('cryptoContact').value = '';
-                }
-            } catch(err) { alert("خطا در ثبت تراکنش."); }
-        }
+        function showDashboard(data) {
+            document.getElementById('panel-activate').classList.add('hidden');
+            document.getElementById('panel-login').classList.add('hidden');
+            document.getElementById('navigationTabs').classList.add('hidden');
+            document.getElementById('userDashboard').classList.remove('hidden');
+            document.getElementById('logoutSection').classList.remove('hidden');
 
-        // ۴. ثبت درخواست تست رایگان
-        async function submitFreeRequest(e) {
-            e.preventDefault();
-            const name = document.getElementById('freeName').value.trim();
-            const contact = document.getElementById('freeContact').value.trim();
-            
-            try {
-                const response = await fetch(`${BACKEND_URL}/submit-free`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name: name, contact: contact })
-                });
-                if(response.ok) {
-                    alert("درخواست تست ثبت شد. ادمین به زودی توکن را برای شما ارسال خواهد کرد.");
-                    document.getElementById('freeName').value = '';
-                    document.getElementById('freeContact').value = '';
-                }
-            } catch(err) { alert("خطا در ثبت درخواست تست."); }
+            document.getElementById('dashUser').innerText = data.username;
+            document.getElementById('dashPass').innerText = data.password || "حفظ شده در دیتابیس";
+            document.getElementById('dashVolume').innerText = (data.total_volume || data.volume) + " GB";
+            document.getElementById('dashUsed').innerText = (data.used_volume !== undefined ? data.used_volume : 0) + " GB";
+            document.getElementById('dashRemain').innerText = (data.remaining_volume !== undefined ? data.remaining_volume : data.volume) + " GB";
+            document.getElementById('dashDays').innerText = data.days;
+            document.getElementById('configArea').value = data.config;
+
+            renderDownloadLinks();
         }
 
         function copyLink() {
             const area = document.getElementById('configArea');
             area.select();
             document.execCommand('copy');
-            alert("کانفیگ واقعی کپی شد!");
-        }
-
-        function copyActLink() {
-            const area = document.getElementById('actConfigArea');
-            area.select();
-            document.execCommand('copy');
-            alert("کانفیگ واقعی کپی شد!");
+            alert("کانفیگ واقعی V3EEED کپی شد!");
         }
 
         function logout() {
