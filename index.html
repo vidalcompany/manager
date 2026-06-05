@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>V3EEED | VEEED ALL YOU NEED</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between">
+
+    <header class="border-b border-amber-500/20 bg-slate-900/80 p-4">
+        <div class="max-w-4xl mx-auto flex items-center justify-between">
+            <h1 class="font-black text-xl text-amber-400">V3EEED</h1>
+            <p class="text-[10px] text-rose-500 font-mono font-bold uppercase">VEEED ALL YOU NEED</p>
+        </div>
+    </header>
+
+    <main class="flex-1 w-full max-w-md mx-auto px-4 py-12">
+        <div id="activationBox" class="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl">
+            <h2 class="text-lg font-black text-amber-400 mb-2">فعال‌سازی اشتراک امنیتی</h2>
+            <p class="text-xs text-slate-400 mb-6">توکن خود را وارد کنید تا کانفیگ واقعی مستقیماً روی سرور برای شما ساخته شود.</p>
+            
+            <form onsubmit="activateToken(event)" class="space-y-4">
+                <input type="text" id="tokenInput" required class="w-full bg-slate-950 border border-slate-800 focus:border-amber-500 rounded-xl px-4 py-3 text-center font-mono text-amber-400 tracking-wider" placeholder="TOK-V3-XXXX">
+                <button type="submit" id="btnText" class="w-full py-3 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black rounded-xl text-sm transition-all">اتصال و ساخت اکانت روی سرور</button>
+            </form>
+        </div>
+
+        <div id="resultBox" class="hidden bg-slate-900 border border-emerald-500/30 rounded-3xl p-6 shadow-2xl space-y-4">
+            <h2 class="text-lg font-black text-emerald-400">اتصال با موفقیت برقرار شد! 🎉</h2>
+            <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-2 text-xs">
+                <div>حجم پلان: <strong id="resVolume" class="text-amber-400 font-mono"></strong> گیگابایت</div>
+                <div>مدت اشتراک: <strong id="resDays" class="text-amber-400 font-mono"></strong> روز</div>
+                <div>نام کاربری شما در ثنایی: <code id="resUser" class="text-indigo-400"></code></div>
+            </div>
+            <textarea id="configArea" readonly rows="4" class="w-full bg-slate-950 p-3 rounded-xl border border-slate-800 font-mono text-[10px] text-amber-200/80 focus:outline-none break-all"></textarea>
+            <button onclick="copyLink()" class="w-full py-2.5 bg-emerald-600 text-white font-bold rounded-xl text-xs">کپی کانفیگ V3EEED</button>
+        </div>
+    </main>
+
+    <script>
+        // آدرس ساب‌دومین و پورت امن بک‌اند پایتون شما که جایگذاری شد
+        const BACKEND_URL = "https://iq.veeed.ir:8000";
+
+        async function activateToken(e) {
+            e.preventDefault();
+            const tok = document.getElementById('tokenInput').value.trim();
+            const btn = document.getElementById('btnText');
+            
+            btn.innerText = "در حال ارتباط با پنل ثنایی سرور...";
+            btn.disabled = true;
+
+            try {
+                const response = await fetch(`${BACKEND_URL}/activate-token`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ token: tok })
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    alert(data.detail || "خطایی رخ داد.");
+                    btn.innerText = "اتصال و ساخت اکانت روی سرور";
+                    btn.disabled = false;
+                    return;
+                }
+
+                document.getElementById('activationBox').classList.add('hidden');
+                document.getElementById('resultBox').classList.remove('hidden');
+                
+                document.getElementById('resVolume').innerText = data.volume;
+                document.getElementById('resDays').innerText = data.days;
+                document.getElementById('resUser').innerText = data.username;
+                document.getElementById('configArea').value = data.config;
+
+            } catch (err) {
+                alert("خطا در اتصال امن. مطمئن شوید اسکریپت پایتون روی پورت 8000 سرور iq.veeed.ir روشن است و فایروال آن را مسدود نکرده است.");
+                btn.innerText = "اتصال و ساخت اکانت روی سرور";
+                btn.disabled = false;
+            }
+        }
+
+        function copyLink() {
+            const area = document.getElementById('configArea');
+            area.select();
+            document.execCommand('copy');
+            alert("کانفیگ واقعی با موفقیت کپی شد!");
+        }
+    </script>
+</body>
+</html>
